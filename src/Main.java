@@ -13,7 +13,7 @@ public class Main {
 
         for (int i = 0; i < 10000; i++) {
             try {
-                TimeUnit.MICROSECONDS.sleep(25);
+                TimeUnit.MICROSECONDS.sleep(25000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
