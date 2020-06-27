@@ -1,10 +1,15 @@
+import javax.naming.directory.DirContext;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+/**
+ * @author gaoguofeng
+ */
 public class Tankframe extends Frame {
 
     Tank tank;
+    Tank enemy;
 
     public Tankframe () {
         this.setTitle("Tank war");
@@ -12,26 +17,34 @@ public class Tankframe extends Frame {
         this.setSize(800, 600);
 
         this.addKeyListener(new TankKeyListener());
-        tank =new Tank(100, 100);
+        tank = new Tank(100, 100, Dir.R);
+        enemy = new Tank(100, 100, Dir.D);
     }
 
 
     @Override
     public void paint(Graphics g) {
         tank.paint(g);
+        enemy.paint(g);
     }
 
+    /**
+     * 键盘如果不松键，它会一直触发事件。
+     */
     private class TankKeyListener extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
 
             tank.keyPressed(e);
+            enemy.keyPressed(e);
 
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            super.keyReleased(e);
+
+            tank.keyReleased(e);
+            enemy.keyReleased(e);
         }
     }
 }
