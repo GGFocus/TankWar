@@ -1,4 +1,5 @@
-import java.awt.*;
+package com.gaoguofeng.tank;
+
 import java.util.concurrent.TimeUnit;
 
 /**
