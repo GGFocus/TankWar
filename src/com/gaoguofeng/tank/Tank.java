@@ -1,14 +1,24 @@
 package com.gaoguofeng.tank;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import static com.gaoguofeng.tank.Tankframe.INSTANCE;
 
 /**
  * 面向对象编程，设计对应的类
  */
-public class Tank {
+public class Tank<add> {
     public int x;
     public int y;
+    Tankframe tf;
+
+    private Group group;
 
     private boolean moving = false;
 
@@ -38,13 +48,12 @@ public class Tank {
         return SPEED;
     }
 
-    public Tank(int x, int y, Dir dir) {
+    public Tank(int x, int y, Dir dir,Group group,Tankframe tf) {
         this.x = x;
         this.y = y;
         this.dir = dir;
-    }
-
-    public Tank() {
+        this.group = group;
+        this.tf = tf;
     }
 
     /**
@@ -52,9 +61,51 @@ public class Tank {
      * @param g
      */
     public void paint(Graphics g) {
-        g.fillRect(x,y,50,50);
-        move();
+        //这段代码的问题是每次都要重新load资源。图片和声音的资源一般都是加载一次。
+        //用静态代码块定义图片资源，这样就可以只加载一次。
+       /* try {
+            BufferedImage imageTank = ImageIO.read(Tank.class.getClassLoader().getResourceAsStream("images/GoodTank1.png"));
+            g.drawImage(imageTank, x, y, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
 
+        if(this.group == Group.Good){
+            switch (dir) {
+                case L:
+                    g.drawImage(ResourceMgr.goodTankL, x, y, null);
+                    break;
+                case R:
+                    g.drawImage(ResourceMgr.goodTankR, x, y, null);
+                    break;
+                case U:
+                    g.drawImage(ResourceMgr.goodTankU, x, y, null);
+                    break;
+                case D:
+                    g.drawImage(ResourceMgr.goodTankD, x, y, null);
+                    break;
+            }
+        }
+
+
+        if(this.group == Group.Bad){
+            switch (dir) {
+                case L:
+                    g.drawImage(ResourceMgr.badTankL, x, y, null);
+                    break;
+                case R:
+                    g.drawImage(ResourceMgr.badTankR, x, y, null);
+                    break;
+                case U:
+                    g.drawImage(ResourceMgr.badTankU, x, y, null);
+                    break;
+                case D:
+                    g.drawImage(ResourceMgr.badTankD, x, y, null);
+                    break;
+            }
+        }
+
+        move();
     }
 
     /**
@@ -129,9 +180,18 @@ public class Tank {
             case KeyEvent.VK_DOWN:
                 bD = false;
                 break;
+            case KeyEvent.VK_CONTROL:
+                fire();
+                break;
         }
 
         setMainDir();
+    }
+
+
+    private void fire() {
+        //如何将这个新建的子弹对象，传给Tankframe
+        this.tf.add(new Bullet(x, y, dir, group));
     }
 
     /**
