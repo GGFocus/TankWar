@@ -1,4 +1,5 @@
-import javax.naming.directory.DirContext;
+package com.gaoguofeng.tank;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -29,7 +30,7 @@ public class Tankframe extends Frame {
     }
 
     /**
-     * 键盘如果不松键，它会一直触发事件。
+     * ?????????????????????????????
      */
     private class TankKeyListener extends KeyAdapter {
         @Override

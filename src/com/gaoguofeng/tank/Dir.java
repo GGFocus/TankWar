@@ -1,3 +1,5 @@
+package com.gaoguofeng.tank;
+
 /**
  * 枚举为什么比INT更好？
  * 1.在编译期间就可以发现问题，问题发现的越早越好。

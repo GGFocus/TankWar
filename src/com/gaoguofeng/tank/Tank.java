@@ -1,3 +1,5 @@
+package com.gaoguofeng.tank;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -7,6 +9,8 @@ import java.awt.event.KeyEvent;
 public class Tank {
     public int x;
     public int y;
+
+    private boolean moving = false;
 
     private boolean bL, bR, bU, bD;
 
@@ -85,19 +89,22 @@ public class Tank {
      * 当一个键被抬起时，方向要重新计算
      */
     public void move(){
-        switch (dir){
-            case L:
-                x -= SPEED;
-                break;
-            case U:
-                y -= SPEED;
-                break;
-            case R:
-                x += SPEED;
-                break;
-            case D:
-                y += SPEED;
-                break;
+
+        if(moving) {
+            switch (dir) {
+                case L:
+                    x -= SPEED;
+                    break;
+                case U:
+                    y -= SPEED;
+                    break;
+                case R:
+                    x += SPEED;
+                    break;
+                case D:
+                    y += SPEED;
+                    break;
+            }
         }
     }
 
@@ -131,20 +138,28 @@ public class Tank {
      * 设置主战坦克的方向
      */
     private void setMainDir() {
+
+        //all dir keys are released tank should be stop
         if (!bL && !bR && !bU && !bD) {
             dir = Dir.STOP;
-        }
-        if (bL && !bR && !bU && !bD) {
-            dir = Dir.L;
-        }
-        if (!bL && bR && !bU && !bD) {
-            dir = Dir.R;
-        }
-        if (!bL && !bR && bU && !bD) {
-            dir = Dir.U;
-        }
-        if (!bL && !bR && !bU && bD) {
-            dir = Dir.D;
+            moving = false;
+
+        } else {
+            //any dir is pressed, tank should be moving
+            moving = true;
+
+            if (bL && !bR && !bU && !bD) {
+                dir = Dir.L;
+            }
+            if (!bL && bR && !bU && !bD) {
+                dir = Dir.R;
+            }
+            if (!bL && !bR && bU && !bD) {
+                dir = Dir.U;
+            }
+            if (!bL && !bR && !bU && bD) {
+                dir = Dir.D;
+            }
         }
     }
 }
